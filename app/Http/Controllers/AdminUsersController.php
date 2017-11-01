@@ -14,7 +14,7 @@ class AdminUsersController extends Controller
     public function index()
     {
         //
-        return view('admin.categories.index');
+        return view('admin.users.index');
     }
 
     /**
