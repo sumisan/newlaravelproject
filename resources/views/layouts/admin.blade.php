@@ -57,16 +57,16 @@
                 <li>
                     <a href="#" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-fw fa-search"></i> Users <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                     <ul id="submenu-1" class="collapse">
-                        <li><a href="{{ ('users.index') }}"><i class="fa fa-angle-double-right"></i> All Users</a></li>
-                        <li><a href="{{ ('users.create') }}"><i class="fa fa-angle-double-right"></i> Create User</a></li>
+                        <li><a href="{{ route('users.index') }}"><i class="fa fa-angle-double-right"></i> All Users</a></li>
+                        <li><a href="{{ route('users.create') }}"><i class="fa fa-angle-double-right"></i> Create User</a></li>
                     </ul>
                 </li>
 
                 <li>
                     <a href="#" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-star"></i>  Posts <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                     <ul id="submenu-2" class="collapse">
-                        <li><a href="{{ ('posts.index')}} "><i class="fa fa-angle-double-right"></i> All Posts</a></li>
-                        <li><a href="{{ ('posts.create')}} "><i class="fa fa-angle-double-right"></i> Create Post</a></li>
+                        <li><a href="{{ ('admin.posts.index')}} "><i class="fa fa-angle-double-right"></i> All Posts</a></li>
+                        <li><a href="{{ ('admin.posts.create')}} "><i class="fa fa-angle-double-right"></i> Create Post</a></li>
                     </ul>
                 </li>
 
