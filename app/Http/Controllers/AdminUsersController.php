@@ -58,6 +58,21 @@ class AdminUsersController extends Controller
         //Method 2
        //$user = User::create($request->all());
 
+        //=========================================================
+        //check if password field is empty
+        /*if (trim($request->password) == ''){
+            //add all other input fields except the password field
+            $input = $request->except('password');
+
+            //with only you list fields to be included
+            $input = $request->only('password','name');
+        }else{
+
+            //include all the input fields
+            $input = $request->all();
+        }*/
+        //===========================================================
+
         //persist all data into the database
         $input = $request->all();
 
@@ -79,9 +94,13 @@ class AdminUsersController extends Controller
 
         }
 
+
+        //trim password. remove any white spaces it might have
+        $input['password'] = trim($input['password']);
+
         //encrypt password
         $input['password'] = bcrypt($request->passowrd);
-        
+
         //persist data in the database
         $user = new User;
         $user->create($input);
@@ -109,7 +128,12 @@ class AdminUsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = new User;
+        $user = $user->findOrFail($id);
+
+        $roles = Role::get()->pluck('name','id')->toArray();
+
+        return view('admin.users.edit', compact('user','roles'));
     }
 
     /**
@@ -119,9 +143,66 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UsersFormRequest $request, $id)
     {
-        //
+        //======================================================
+        //check if password field is empty
+        /*if (trim($request->password) == ''){
+            //add all other input fields except the password field
+            $input = $request->except('password');
+
+            //with only you list fields to be included
+            $input = $request->only('password','name');
+        }else{
+
+            //include all the input fields
+            $input = $request->all();
+        }*/
+        //=======================================================
+
+       // dd($request->all());
+        //get user
+        $user = new User;
+
+        $user = $user->findOrFail($id);
+
+        //get all input data
+        $input = $request->all();
+
+        //check if file has been uploaded
+        if($file = $request->file('photo_id')){
+            //get photo name
+            $name = time() . $file->getClientOriginalName();
+
+            //store photo in images folder
+            $file->move('images', $name);
+
+            //update image path in photos table
+            //check if user has photo
+            if($user->photo) {
+                $photo = new Photo;
+                $photo = $photo->update(['path' => $name]);
+            }else{
+                $photo = new Photo;
+                $photo = $photo->create(['path' => $name]);
+            }
+
+            //get photo_id
+            $input['photo_id'] = $photo->id;
+        }
+
+
+        //trim password. remove any white spaces it might have
+        $input['password'] = trim($input['password']);
+        //encrypt password
+        $input['password'] = bcrypt($request->password);
+
+        $user->update($input);
+
+
+        //redirect to users index page
+       return redirect('admin/users');
+
     }
 
     /**

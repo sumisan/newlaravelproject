@@ -11,6 +11,9 @@
                     Id
                 </th>
                 <th>
+                    Photo
+                </th>
+                <th>
                     Username
                 </th>
                 <th>
@@ -39,7 +42,10 @@
                             {{$user->id}}
                         </td>
                         <td>
-                            {{$user->name}}
+                            <img src="{{$user->photo ? $user->photo->path : '/images/placeholder.png'}}" height="50">
+                        </td>
+                        <td>
+                            <a href="{{route('users.edit', $user->id)}}"> {{$user->name}}</a>
                         </td>
                         <td>
                             {{$user->email}}
