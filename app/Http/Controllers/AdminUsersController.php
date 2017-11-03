@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\Photo;
+use Illuminate\Support\Facades\Session;
 
 class AdminUsersController extends Controller
 {
@@ -105,6 +106,9 @@ class AdminUsersController extends Controller
         $user = new User;
         $user->create($input);
 
+        //create a flash message
+        $request->session()->flash('user_registered', 'User has been registered successfully');
+
         return redirect('/admin/users');
 
     }
@@ -199,6 +203,8 @@ class AdminUsersController extends Controller
 
         $user->update($input);
 
+        //create a flash message
+        $request->session()->flash('user_edited', 'User\'s profile has been updated successfully');
 
         //redirect to users index page
        return redirect('admin/users');
@@ -211,8 +217,22 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $user = new User;
+
+        //find user
+        $user = $user->findOrFail($id);
+
+        //delete user's photo from the local directory
+        unlink(public_path() . $user->photo->path);
+
+        //delete user from the database
+        $user->delete();
+
+        //create a flash message
+        $request->session()->flash('user_deleted', 'User has been deleted successfully');
+
+        return redirect("/admin/users");
     }
 }

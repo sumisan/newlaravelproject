@@ -4,6 +4,25 @@
 
     <h1>Registered Users</h1>
 
+    <!--display session flash messages if any exist-->
+    @if(session('user_registered') != '')
+
+        <p class="bg-success">{{session('user_registered')}}</p>
+
+    @endif
+
+    @if(session('user_edited') != '')
+
+        <p class="bg-success">{{session('user_edited')}}</p>
+
+    @endif
+
+    @if(session('user_deleted') != '')
+
+        <p class="bg-danger">{{session('user_deleted')}}</p>
+
+    @endif
+
     <table class="table">
         <thead>
             <tr>
