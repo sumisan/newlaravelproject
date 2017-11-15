@@ -27,6 +27,16 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    //if user is deleting his/her post is also deleted
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function($user) { // before delete() method call this
+            $user->posts()->delete();
+            // do the rest of the cleanup...
+        });
+    }
+
     //one to many relation
     public function role(){
         return $this->belongsTo('App\Role');

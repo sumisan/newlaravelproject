@@ -28,10 +28,11 @@
                 <tr>
                     <td>{{$post->id}}</td>
                     <td><img height="50" src="{{$post->photo ? $post->photo->path :'/images/placeholder.png' }}" ></td>
-                    <td>{{$post->user->name}}</td>
+                    <td><a href="{{route('posts.edit', $post->id)}}">{{$post->user->name}}</a></td>
                     <td>{{$post->category->name}}</td>
                     <td>{{$post->title}}</td>
-                    <td>{{$post->body}}</td>
+                    <!--laravel string helper functions-->
+                    <td>{{str_limit($post->body, 12)}}</td>
                     <td>{{$post->created_at->diffForHumans()}}</td>
                     <td>{{$post->updated_at->diffForHumans()}}</td>
                 </tr>

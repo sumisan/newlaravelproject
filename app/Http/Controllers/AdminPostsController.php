@@ -92,7 +92,14 @@ class AdminPostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = new Post;
+        $post = $post->findOrFail($id);
+
+        //get category name
+        $categories = new Category;
+        $categories = $categories->get()->pluck('name', 'id')->toArray();
+
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -102,9 +109,42 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostsCreateRequest $request, $id)
     {
-        //
+        //get logged in user
+        $user = Auth::user();
+
+        //get post to be updated
+        $post = new Post();
+        $post = $post->findOrFail($id);
+
+        //get all input data
+        $input = $request->all();
+
+        //check if photo is uploaded
+        if($file = $request->file('photo_id')){
+            //get photo name
+            $name = time() . $file->getClientOriginalName();
+
+            //store image in folder
+            $file->move('images', $name);
+
+            //get photo id to be update
+            $photoId = $post->photo_id;
+
+            //store image path in photo table
+            $post->photo()->whereId($photoId)->update(['path'=>$name]);
+
+            //get photo id
+            $input['photo_id'] = $photoId;
+        }
+
+        $user->posts()->whereId($id)->first()->update($input);
+
+        //make updates in posts table
+       // $post->update($input);
+
+        return redirect('/admin/posts');
     }
 
     /**
@@ -115,6 +155,14 @@ class AdminPostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = new Post;
+        $post = $post->findOrFail($id);
+
+        //delete image in directory
+        unlink(public_path() . $post->photo->path);
+
+        $post->delete();
+
+        return redirect('/admin/posts');
     }
 }
