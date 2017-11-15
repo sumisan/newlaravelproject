@@ -49,4 +49,9 @@ class User extends Authenticatable
 
     }//close public function isAdmin(){
 
+    //user post one to many relationship
+    public function posts(){
+        return $this->hasMany('App\Post');
+    }
+
 }

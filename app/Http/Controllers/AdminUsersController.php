@@ -97,10 +97,10 @@ class AdminUsersController extends Controller
 
 
         //trim password. remove any white spaces it might have
-        $input['password'] = trim($input['password']);
+        $input['password'] = trim($request->password);
 
         //encrypt password
-        $input['password'] = bcrypt($request->passowrd);
+        $input['password'] = bcrypt($input['password']);
 
         //persist data in the database
         $user = new User;
@@ -197,9 +197,9 @@ class AdminUsersController extends Controller
 
 
         //trim password. remove any white spaces it might have
-        $input['password'] = trim($input['password']);
+        $input['password'] = trim($request->password);
         //encrypt password
-        $input['password'] = bcrypt($request->password);
+        $input['password'] = bcrypt($input['password']);
 
         $user->update($input);
 

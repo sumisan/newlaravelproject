@@ -21,4 +21,9 @@ class Photo extends Model
 
         return $this->directory . $photo;
     }
+
+    //photo posts one to one relationship
+    public function post(){
+        return $this->hasOne('App\Post');
+    }
 }

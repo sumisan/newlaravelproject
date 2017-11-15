@@ -27,4 +27,7 @@ Route::group(['middleware'=>'admin'], function(){
 
     Route::resource('/admin/users', 'AdminUsersController');
 
+    //access posts page as an admin
+    Route::resource('/admin/posts', 'AdminPostsController');
+
 });
